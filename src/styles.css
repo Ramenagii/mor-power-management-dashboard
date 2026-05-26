@@ -35,6 +35,10 @@ body {
   overflow-x: hidden;
 }
 
+body.intro-active {
+  overflow: hidden;
+}
+
 button {
   font: inherit;
 }
@@ -67,6 +71,8 @@ button {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  width: 100vw;
+  height: 100dvh;
   background:
     radial-gradient(circle at 50% 45%, rgba(4, 181, 223, 0.12), transparent 28%),
     linear-gradient(180deg, #ffffff 0%, #f4f4f0 100%);
@@ -100,7 +106,7 @@ button {
   gap: 24px;
   width: min(520px, calc(100vw - 40px));
   padding: 40px 18px;
-  transform: translateY(2vh);
+  transform: translateY(5vh);
 }
 
 .loadwise-mark {

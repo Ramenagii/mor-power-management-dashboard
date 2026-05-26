@@ -181,6 +181,11 @@ function App() {
     return () => window.clearTimeout(timer)
   }, [introKey])
 
+  useEffect(() => {
+    document.body.classList.toggle('intro-active', !introDone)
+    return () => document.body.classList.remove('intro-active')
+  }, [introDone])
+
   const load = totalLoad(outlets)
   const remaining = Math.max(MAX_CAPACITY - load, 0)
   const activeCount = outlets.filter((outlet) => outlet.status === 'Active').length
