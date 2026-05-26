@@ -104,9 +104,9 @@ button {
   display: grid;
   justify-items: center;
   gap: 24px;
-  width: min(520px, calc(100vw - 40px));
+  width: min(640px, calc(100vw - 40px));
   padding: 40px 18px;
-  transform: translateY(5vh);
+  transform: translate(-50px, 5vh);
 }
 
 .loadwise-mark {
@@ -272,13 +272,13 @@ button {
 
 @keyframes logoFloat {
   0% {
-    transform: translate(-50px, 18px) scale(0.96);
+    transform: translateY(18px) scale(0.96);
   }
   52% {
-    transform: translate(-50px, 0) scale(1);
+    transform: translateY(0) scale(1);
   }
   100% {
-    transform: translate(-50px, -8px) scale(0.985);
+    transform: translateY(-8px) scale(0.985);
   }
 }
 
