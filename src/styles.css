@@ -272,13 +272,13 @@ button {
 
 @keyframes logoFloat {
   0% {
-    transform: translate(-15px, 18px) scale(0.96);
+    transform: translate(-50px, 18px) scale(0.96);
   }
   52% {
-    transform: translate(-15px, 0) scale(1);
+    transform: translate(-50px, 0) scale(1);
   }
   100% {
-    transform: translate(-15px, -8px) scale(0.985);
+    transform: translate(-50px, -8px) scale(0.985);
   }
 }
 
