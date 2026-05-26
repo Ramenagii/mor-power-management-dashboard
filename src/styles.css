@@ -1,27 +1,29 @@
 :root {
-  color: #252321;
-  background: #f7f6f3;
+  color: #0d1b3a;
+  background: #f6fbfd;
   font-family:
     "Helvetica Neue", "SF Pro Display", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  --canvas: #f7f6f3;
+  --canvas: #f6fbfd;
   --surface: #ffffff;
-  --surface-muted: #fbfbfa;
-  --border: #e8e5df;
-  --border-strong: #d8d3c9;
-  --ink: #252321;
-  --muted: #78746d;
-  --faint: #a8a29a;
-  --accent: #2f5d50;
-  --accent-soft: #edf3ec;
-  --blue-soft: #e8f1f6;
-  --blue-ink: #315d76;
-  --yellow-soft: #fbf3db;
-  --yellow-ink: #7f5c18;
-  --red-soft: #fdebec;
-  --red-ink: #8f302f;
+  --surface-muted: #f1f8fb;
+  --border: #d9edf5;
+  --border-strong: #a7d4e5;
+  --ink: #0d1b3a;
+  --muted: #5f7485;
+  --faint: #8ea1ad;
+  --accent: #058bc2;
+  --accent-strong: #0d1b3a;
+  --accent-bright: #04b5df;
+  --accent-soft: #e7f8fd;
+  --blue-soft: #eaf4fb;
+  --blue-ink: #0677ad;
+  --yellow-soft: #fff6df;
+  --yellow-ink: #8a640f;
+  --red-soft: #fff0f2;
+  --red-ink: #9a2d3a;
   --radius: 8px;
 }
 
@@ -32,6 +34,7 @@
 body {
   margin: 0;
   min-width: 320px;
+  background: var(--canvas);
   overflow-x: hidden;
 }
 
@@ -75,7 +78,7 @@ button {
   height: 100dvh;
   background:
     radial-gradient(circle at 50% 45%, rgba(4, 181, 223, 0.12), transparent 28%),
-    linear-gradient(180deg, #ffffff 0%, #f4f4f0 100%);
+    linear-gradient(180deg, #ffffff 0%, #f6fbfd 100%);
   transition:
     opacity 620ms ease,
     transform 620ms ease,
@@ -93,8 +96,8 @@ button {
   inset: 0;
   opacity: 0.42;
   background-image:
-    linear-gradient(rgba(37, 35, 33, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(37, 35, 33, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(13, 27, 58, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(5, 139, 194, 0.03) 1px, transparent 1px);
   background-size: 34px 34px;
   mask-image: radial-gradient(circle at center, black 0%, transparent 72%);
 }
@@ -235,7 +238,7 @@ button {
 }
 
 .loadwise-copy p {
-  color: #25262d;
+  color: var(--ink);
   font-size: clamp(38px, 10vw, 78px);
   font-weight: 300;
   letter-spacing: 0.28em;
@@ -244,7 +247,7 @@ button {
 }
 
 .loadwise-copy span {
-  color: #6f7680;
+  color: var(--muted);
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.22em;
@@ -623,7 +626,7 @@ h3 {
   overflow: hidden;
   width: 100%;
   border-radius: 999px;
-  background: #eeeae3;
+  background: #e4f3f8;
 }
 
 .meter {
@@ -633,7 +636,7 @@ h3 {
 .meter-fill {
   height: 100%;
   border-radius: inherit;
-  background: var(--accent);
+  background: linear-gradient(90deg, var(--accent-bright), var(--accent));
   transition: width 250ms ease;
 }
 
@@ -652,7 +655,7 @@ h3 {
   top: 0;
   width: 1px;
   height: 10px;
-  background: rgba(37, 35, 33, 0.45);
+  background: rgba(13, 27, 58, 0.42);
 }
 
 .warning-mark {
@@ -742,7 +745,7 @@ h3 {
 .mini-meter > div {
   height: 100%;
   border-radius: inherit;
-  background: var(--accent);
+  background: linear-gradient(90deg, var(--accent-bright), var(--accent));
 }
 
 .outlet-meta {
