@@ -106,7 +106,7 @@ button {
   gap: 24px;
   width: min(520px, calc(100vw - 40px));
   padding: 40px 18px;
-  transform: translateY(5vh);
+  transform: translate(-10px, 5vh);
 }
 
 .loadwise-mark {
