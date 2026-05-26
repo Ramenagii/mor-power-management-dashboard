@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import {
   Activity,
   AlertTriangle,
@@ -173,6 +173,13 @@ function severityIcon(severity: Severity) {
 function App() {
   const [outlets, setOutlets] = useState<Outlet[]>(baseOutlets)
   const [events, setEvents] = useState<EventLog[]>(initialEvents)
+  const [introDone, setIntroDone] = useState(false)
+  const [introKey, setIntroKey] = useState(0)
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setIntroDone(true), 3600)
+    return () => window.clearTimeout(timer)
+  }, [introKey])
 
   const load = totalLoad(outlets)
   const remaining = Math.max(MAX_CAPACITY - load, 0)
@@ -306,6 +313,11 @@ function App() {
     )
   }
 
+  const replayIntro = () => {
+    setIntroDone(false)
+    setIntroKey((current) => current + 1)
+  }
+
   const toggleOutlet = (id: number) => {
     const outlet = outlets.find((item) => item.id === id)
     if (!outlet) return
@@ -341,15 +353,22 @@ function App() {
   }
 
   return (
-    <main className="app-shell">
+    <>
+    <LoadingScreen key={introKey} isLeaving={introDone} />
+    <main className={`app-shell ${introDone ? 'is-ready' : 'is-waiting'}`}>
       <header className="topbar">
         <div>
           <p className="eyebrow">Shared Laboratory Power Management</p>
           <h1>Power Management Console</h1>
         </div>
-        <div className={`system-pill ${currentState.toLowerCase()}`}>
-          <Activity size={18} />
-          {currentState}
+        <div className="topbar-actions">
+          <button type="button" className="replay-button" onClick={replayIntro}>
+            Replay intro
+          </button>
+          <div className={`system-pill ${currentState.toLowerCase()}`}>
+            <Activity size={18} />
+            {currentState}
+          </div>
         </div>
       </header>
 
@@ -452,6 +471,58 @@ function App() {
         </div>
       </section>
     </main>
+    </>
+  )
+}
+
+function LoadingScreen({ isLeaving }: { isLeaving: boolean }) {
+  return (
+    <section className={`loading-screen ${isLeaving ? 'leaving' : ''}`} aria-label="Loading dashboard">
+      <div className="loader-noise" />
+      <div className="loadwise-stage">
+        <div className="loadwise-mark" aria-hidden="true">
+          <svg viewBox="0 0 260 330" role="img">
+            <defs>
+              <linearGradient id="loadwiseBody" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stopColor="#04b5df" />
+                <stop offset="0.52" stopColor="#056da4" />
+                <stop offset="1" stopColor="#0d1b3a" />
+              </linearGradient>
+              <linearGradient id="loadwiseFace" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stopColor="#ffffff" />
+                <stop offset="0.56" stopColor="#f4f6f7" />
+                <stop offset="1" stopColor="#d6dde2" />
+              </linearGradient>
+            </defs>
+            <ellipse className="logo-shadow" cx="130" cy="305" rx="82" ry="13" />
+            <path className="logo-body" d="M40 142h153l33 33v70c0 11-6 21-15 27l-58 42c-13 9-31 9-44 0l-58-42c-9-6-15-16-15-27v-99c0-8 6-14 14-14Z" />
+            <path className="logo-corner" d="M192 142h1l33 33-40 40v-55c0-10 6-18 6-18Z" />
+            <rect className="logo-slot" x="58" y="156" width="148" height="12" rx="6" />
+            <rect className="logo-neck neck-left" x="72" y="72" width="12" height="70" rx="6" />
+            <rect className="logo-neck neck-mid" x="124" y="36" width="12" height="106" rx="6" />
+            <rect className="logo-neck neck-right" x="176" y="72" width="12" height="70" rx="6" />
+            <circle className="logo-node node-left" cx="78" cy="62" r="31" />
+            <circle className="logo-node node-mid" cx="130" cy="28" r="31" />
+            <circle className="logo-node node-right" cx="182" cy="62" r="31" />
+            <circle className="logo-hole node-left" cx="78" cy="62" r="12" />
+            <circle className="logo-hole node-mid" cx="130" cy="28" r="12" />
+            <circle className="logo-hole node-right" cx="182" cy="62" r="12" />
+            <rect className="logo-face" x="77" y="176" width="106" height="86" rx="14" />
+            <rect className="socket socket-a" x="101" y="204" width="14" height="31" rx="3" />
+            <rect className="socket socket-b" x="145" y="204" width="14" height="31" rx="3" />
+            <path className="socket socket-c" d="M121 250c0-7 5-12 11-12s11 5 11 12v16h-22v-16Z" />
+            <rect className="logo-sweep" x="128" y="0" width="132" height="330" />
+          </svg>
+        </div>
+        <div className="loadwise-copy">
+          <p>LOADWISE</p>
+          <span>Context-aware power management</span>
+        </div>
+        <div className="loader-progress" aria-hidden="true">
+          <div />
+        </div>
+      </div>
+    </section>
   )
 }
 

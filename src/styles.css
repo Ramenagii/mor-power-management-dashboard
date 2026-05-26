@@ -42,6 +42,355 @@ button {
 .app-shell {
   min-height: 100vh;
   padding: 28px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 540ms ease,
+    transform 540ms ease;
+}
+
+.app-shell.is-ready {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.app-shell.is-waiting {
+  pointer-events: none;
+  user-select: none;
+}
+
+.loading-screen {
+  position: fixed;
+  z-index: 50;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(4, 181, 223, 0.12), transparent 28%),
+    linear-gradient(180deg, #ffffff 0%, #f4f4f0 100%);
+  transition:
+    opacity 620ms ease,
+    transform 620ms ease,
+    visibility 620ms ease;
+}
+
+.loading-screen.leaving {
+  opacity: 0;
+  transform: scale(1.025);
+  visibility: hidden;
+}
+
+.loader-noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.42;
+  background-image:
+    linear-gradient(rgba(37, 35, 33, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37, 35, 33, 0.03) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: radial-gradient(circle at center, black 0%, transparent 72%);
+}
+
+.loadwise-stage {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 24px;
+  width: min(520px, calc(100vw - 40px));
+  padding: 40px 18px;
+}
+
+.loadwise-mark {
+  width: min(320px, 64vw);
+  filter: drop-shadow(0 34px 42px rgba(12, 27, 44, 0.16));
+  transform-origin: center bottom;
+  animation: logoFloat 3200ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.loadwise-mark svg {
+  display: block;
+  overflow: visible;
+  width: 100%;
+}
+
+.logo-shadow {
+  fill: rgba(20, 27, 35, 0.12);
+  opacity: 0;
+  transform-origin: center;
+  animation: shadowIn 1200ms ease 1200ms forwards;
+}
+
+.logo-body {
+  fill: url("#loadwiseBody");
+  stroke: rgba(8, 31, 56, 0.08);
+  stroke-width: 1;
+  transform-origin: center 245px;
+  animation: bodyRise 920ms cubic-bezier(0.16, 1, 0.3, 1) 260ms both;
+}
+
+.logo-corner {
+  fill: rgba(4, 42, 86, 0.28);
+  transform-origin: 192px 142px;
+  animation: foldIn 900ms cubic-bezier(0.16, 1, 0.3, 1) 860ms both;
+}
+
+.logo-slot {
+  fill: rgba(226, 250, 255, 0.72);
+  transform-origin: 58px 162px;
+  animation: slotDraw 900ms ease 1100ms both;
+}
+
+.logo-neck,
+.logo-node,
+.logo-hole {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+
+.logo-neck {
+  fill: #0677ad;
+  animation: antennaRise 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.neck-left {
+  animation-delay: 560ms;
+}
+
+.neck-mid {
+  animation-delay: 700ms;
+}
+
+.neck-right {
+  animation-delay: 620ms;
+  fill: #0d1b3a;
+}
+
+.logo-node {
+  fill: #058bc2;
+  animation: nodePop 820ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.node-left {
+  animation-delay: 780ms;
+}
+
+.node-mid {
+  animation-delay: 920ms;
+}
+
+.node-right {
+  animation-delay: 840ms;
+  fill: #0d1b3a;
+}
+
+.logo-hole {
+  fill: #f9fbfb;
+  animation: nodePop 820ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.logo-face {
+  fill: url("#loadwiseFace");
+  transform-origin: center;
+  animation: faceSettle 880ms cubic-bezier(0.16, 1, 0.3, 1) 1180ms both;
+}
+
+.socket {
+  fill: #111827;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: socketIn 500ms ease 1680ms forwards;
+}
+
+.socket-b {
+  animation-delay: 1760ms;
+}
+
+.socket-c {
+  animation-delay: 1840ms;
+}
+
+.logo-sweep {
+  fill: rgba(255, 255, 255, 0.28);
+  mix-blend-mode: screen;
+  transform-origin: center;
+  animation: sweepPass 1400ms cubic-bezier(0.7, 0, 0.2, 1) 1500ms both;
+}
+
+.loadwise-copy {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: copyIn 760ms ease 1950ms forwards;
+}
+
+.loadwise-copy p {
+  color: #25262d;
+  font-size: clamp(38px, 10vw, 78px);
+  font-weight: 300;
+  letter-spacing: 0.28em;
+  line-height: 1;
+  text-indent: 0.28em;
+}
+
+.loadwise-copy span {
+  color: #6f7680;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.loader-progress {
+  overflow: hidden;
+  width: min(260px, 58vw);
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(8, 31, 56, 0.12);
+  opacity: 0;
+  animation: progressFade 600ms ease 2200ms forwards;
+}
+
+.loader-progress div {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #04b5df, #0d1b3a);
+  transform-origin: left;
+  animation: progressFill 1100ms cubic-bezier(0.7, 0, 0.2, 1) 2250ms both;
+}
+
+@keyframes logoFloat {
+  0% {
+    transform: translateY(18px) scale(0.96);
+  }
+  52% {
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    transform: translateY(-8px) scale(0.985);
+  }
+}
+
+@keyframes bodyRise {
+  from {
+    opacity: 0;
+    transform: translateY(42px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes foldIn {
+  from {
+    opacity: 0;
+    transform: rotate(-24deg) translate(20px, -14px);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0) translate(0, 0);
+  }
+}
+
+@keyframes antennaRise {
+  from {
+    opacity: 0;
+    transform: scaleY(0) translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1) translateY(0);
+  }
+}
+
+@keyframes nodePop {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes faceSettle {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.88);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes socketIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slotDraw {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes shadowIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes sweepPass {
+  0% {
+    opacity: 0;
+    transform: translateX(-180px) skewX(-10deg);
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(180px) skewX(-10deg);
+  }
+}
+
+@keyframes copyIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes progressFade {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes progressFill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
 
 .topbar,
@@ -60,6 +409,31 @@ button {
   gap: 18px;
   padding-bottom: 18px;
   border-bottom: 1px solid var(--border);
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.replay-button {
+  min-height: 30px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  padding: 0 11px;
+  text-transform: uppercase;
+}
+
+.replay-button:hover {
+  border-color: var(--border-strong);
+  color: var(--ink);
 }
 
 .eyebrow {
@@ -552,6 +926,11 @@ h3 {
     flex-direction: column;
   }
 
+  .topbar-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .system-pill {
     align-self: flex-start;
   }
@@ -726,5 +1105,16 @@ h3 {
 
   .event-title-row time {
     white-space: normal;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
   }
 }
