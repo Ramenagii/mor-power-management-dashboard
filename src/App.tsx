@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Activity, Cpu, Gauge, PlugZap, ShieldCheck } from 'lucide-react'
+import { Activity, Gauge, PlugZap, ScanLine, ShieldCheck } from 'lucide-react'
 import { EventLogPanel } from './components/EventLogPanel'
+import { HardwarePanel } from './components/HardwarePanel'
 import { LoadingScreen } from './components/LoadingScreen'
 import { MetricCard } from './components/MetricCard'
 import { OutletCard } from './components/OutletCard'
@@ -239,13 +240,13 @@ function App() {
             icon={<PlugZap />}
             label="Active outlets"
             value={`${activeCount}/6`}
-            note="Individually controlled relay channels"
+            note="Six relay-switched outlet channels"
           />
           <MetricCard
-            icon={<Cpu />}
-            label="Controller mode"
-            value="Edge"
-            note="ESP32 local decision simulation"
+            icon={<ScanLine />}
+            label="Metering channels"
+            value="6"
+            note="One PZEM-004T v3.0 + CT per outlet"
           />
         </section>
 
@@ -287,6 +288,7 @@ function App() {
           </div>
 
           <aside className="side-stack">
+            <HardwarePanel />
             <PolicyPanel />
             <ScenarioPanel
               onNormal={resetNormal}

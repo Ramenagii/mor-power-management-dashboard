@@ -8,6 +8,8 @@ export type Outlet = {
   id: number
   name: string
   role: string
+  meter: string
+  relay: string
   priority: Priority
   allowance: number
   watts: number

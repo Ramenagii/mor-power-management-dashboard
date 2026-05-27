@@ -32,6 +32,14 @@ export function OutletCard({ outlet, onToggle }: OutletCardProps) {
           <dd>{outlet.priority}</dd>
         </div>
         <div>
+          <dt>Meter</dt>
+          <dd>{outlet.meter}</dd>
+        </div>
+        <div>
+          <dt>Switching</dt>
+          <dd>{outlet.relay}</dd>
+        </div>
+        <div>
           <dt>Schedule</dt>
           <dd>{outlet.schedule}</dd>
         </div>
