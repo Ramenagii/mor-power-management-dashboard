@@ -17,6 +17,10 @@ export function totalLoad(outlets: Outlet[]) {
   return outlets.reduce((sum, outlet) => sum + outlet.watts, 0)
 }
 
+export function isEnergizedOutlet(status: OutletStatus) {
+  return status === 'Active' || status === 'Standby'
+}
+
 export function systemState(load: number) {
   if (load >= CRITICAL_THRESHOLD) return 'Critical'
   if (load >= WARNING_THRESHOLD) return 'Warning'

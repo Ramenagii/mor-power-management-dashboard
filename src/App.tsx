@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Activity, Gauge, PlugZap, ScanLine, ShieldCheck } from 'lucide-react'
 import { EventLogPanel } from './components/EventLogPanel'
-import { HardwarePanel } from './components/HardwarePanel'
+import { HardwareView } from './components/HardwareView'
 import { LoadingScreen } from './components/LoadingScreen'
 import { MetricCard } from './components/MetricCard'
 import { OutletCard } from './components/OutletCard'
-import { PolicyPanel } from './components/PolicyPanel'
+import { PoliciesView } from './components/PoliciesView'
 import { ScenarioPanel } from './components/ScenarioPanel'
+import { ViewMenu } from './components/ViewMenu'
 import {
   baseOutlets,
   CRITICAL_THRESHOLD,
@@ -15,14 +16,21 @@ import {
   priorityRank,
   WARNING_THRESHOLD,
 } from './data/dashboard'
-import type { EventLog, Outlet, Severity } from './types/dashboard'
-import { formatWatts, getTimeStamp, systemState, totalLoad } from './utils/dashboard'
+import type { AppView, EventLog, Outlet, Severity } from './types/dashboard'
+import {
+  formatWatts,
+  getTimeStamp,
+  isEnergizedOutlet,
+  systemState,
+  totalLoad,
+} from './utils/dashboard'
 
 function App() {
   const [outlets, setOutlets] = useState<Outlet[]>(baseOutlets)
   const [events, setEvents] = useState<EventLog[]>(initialEvents)
   const [introDone, setIntroDone] = useState(false)
   const [introKey, setIntroKey] = useState(0)
+  const [activeView, setActiveView] = useState<AppView>('dashboard')
 
   useEffect(() => {
     const timer = window.setTimeout(() => setIntroDone(true), 3600)
@@ -36,7 +44,7 @@ function App() {
 
   const load = totalLoad(outlets)
   const remaining = Math.max(MAX_CAPACITY - load, 0)
-  const activeCount = outlets.filter((outlet) => outlet.status === 'Active').length
+  const activeCount = outlets.filter((outlet) => isEnergizedOutlet(outlet.status)).length
   const currentState = systemState(load)
   const loadPercent = Math.min((load / MAX_CAPACITY) * 100, 100)
 
@@ -130,7 +138,7 @@ function App() {
 
   const selectiveResponse = () => {
     const lowPriority = outlets
-      .filter((outlet) => outlet.status === 'Active')
+      .filter((outlet) => isEnergizedOutlet(outlet.status))
       .sort((a, b) => priorityRank[a.priority] - priorityRank[b.priority])
       .slice(0, 2)
       .map((outlet) => outlet.id)
@@ -173,7 +181,7 @@ function App() {
     const outlet = outlets.find((item) => item.id === id)
     if (!outlet) return
 
-    if (outlet.status === 'Active') {
+    if (isEnergizedOutlet(outlet.status)) {
       setOutlets((current) =>
         current.map((item) =>
           item.id === id ? { ...item, status: 'Disconnected', watts: 0 } : item,
@@ -223,85 +231,93 @@ function App() {
           </div>
         </header>
 
-        <section className="overview-grid" aria-label="System overview">
-          <MetricCard
-            icon={<Gauge />}
-            label="Total load"
-            value={formatWatts(load)}
-            note={`${Math.round(loadPercent)}% of 2,200 W capacity`}
-          />
-          <MetricCard
-            icon={<ShieldCheck />}
-            label="Remaining capacity"
-            value={formatWatts(remaining)}
-            note={`${formatWatts(WARNING_THRESHOLD)} warning / ${formatWatts(CRITICAL_THRESHOLD)} critical`}
-          />
-          <MetricCard
-            icon={<PlugZap />}
-            label="Active outlets"
-            value={`${activeCount}/6`}
-            note="Six relay-switched outlet channels"
-          />
-          <MetricCard
-            icon={<ScanLine />}
-            label="Metering channels"
-            value="6"
-            note="One PZEM-004T v3.0 + CT per outlet"
-          />
-        </section>
+        <ViewMenu activeView={activeView} onChange={setActiveView} />
 
-        <section className="load-panel" aria-label="Load capacity meter">
-          <div className="section-heading">
-            <div>
-              <p className="eyebrow">Real-time load condition</p>
-              <h2>Capacity and thresholds</h2>
-            </div>
-            <span>
-              {formatWatts(load)} / {formatWatts(MAX_CAPACITY)}
-            </span>
-          </div>
-          <div className="meter" aria-label="Total load usage">
-            <div className="warning-mark" />
-            <div className="critical-mark" />
-            <div className={`meter-fill ${currentState.toLowerCase()}`} style={{ width: `${loadPercent}%` }} />
-          </div>
-          <div className="threshold-row">
-            <span>Normal</span>
-            <span>Warning: {formatWatts(WARNING_THRESHOLD)}</span>
-            <span>Critical: {formatWatts(CRITICAL_THRESHOLD)}</span>
-          </div>
-        </section>
+        {activeView === 'dashboard' && (
+          <>
+            <section className="overview-grid" aria-label="System overview">
+              <MetricCard
+                icon={<Gauge />}
+                label="Total load"
+                value={formatWatts(load)}
+                note={`${Math.round(loadPercent)}% of 2,200 W capacity`}
+              />
+              <MetricCard
+                icon={<ShieldCheck />}
+                label="Remaining capacity"
+                value={formatWatts(remaining)}
+                note={`${formatWatts(WARNING_THRESHOLD)} warning / ${formatWatts(CRITICAL_THRESHOLD)} critical`}
+              />
+              <MetricCard
+                icon={<PlugZap />}
+                label="Energized outlets"
+                value={`${activeCount}/6`}
+                note="Active and standby relay channels"
+              />
+              <MetricCard
+                icon={<ScanLine />}
+                label="Metering channels"
+                value="6"
+                note="One PZEM-004T v3.0 + CT per outlet"
+              />
+            </section>
 
-        <section className="workspace-grid">
-          <div className="outlet-section">
-            <div className="section-heading">
-              <div>
-                <p className="eyebrow">Outlet-level monitoring</p>
-                <h2>Six controlled outlets</h2>
+            <section className="load-panel" aria-label="Load capacity meter">
+              <div className="section-heading">
+                <div>
+                  <p className="eyebrow">Real-time load condition</p>
+                  <h2>Capacity and thresholds</h2>
+                </div>
+                <span>
+                  {formatWatts(load)} / {formatWatts(MAX_CAPACITY)}
+                </span>
               </div>
-            </div>
-            <div className="outlet-grid">
-              {outlets.map((outlet) => (
-                <OutletCard key={outlet.id} outlet={outlet} onToggle={toggleOutlet} />
-              ))}
-            </div>
-          </div>
+              <div className="meter" aria-label="Total load usage">
+                <div className="warning-mark" />
+                <div className="critical-mark" />
+                <div className={`meter-fill ${currentState.toLowerCase()}`} style={{ width: `${loadPercent}%` }} />
+              </div>
+              <div className="threshold-row">
+                <span>Normal</span>
+                <span>Warning: {formatWatts(WARNING_THRESHOLD)}</span>
+                <span>Critical: {formatWatts(CRITICAL_THRESHOLD)}</span>
+              </div>
+            </section>
 
-          <aside className="side-stack">
-            <HardwarePanel />
-            <PolicyPanel />
-            <ScenarioPanel
-              onNormal={resetNormal}
-              onActivate={requestActivation}
-              onBlock={blockInsufficientCapacity}
-              onOverload={postActivationOverload}
-              onSelective={selectiveResponse}
-              onIdle={idleShutdown}
-            />
-          </aside>
-        </section>
+            <section className="workspace-grid dashboard-workspace">
+              <div className="outlet-section">
+                <div className="section-heading">
+                  <div>
+                    <p className="eyebrow">Outlet-level monitoring</p>
+                    <h2>Six controlled outlets</h2>
+                  </div>
+                </div>
+                <div className="outlet-grid">
+                  {outlets.map((outlet) => (
+                    <OutletCard key={outlet.id} outlet={outlet} onToggle={toggleOutlet} />
+                  ))}
+                </div>
+              </div>
 
-        <EventLogPanel events={events} />
+              <aside className="side-stack">
+                <ScenarioPanel
+                  onNormal={resetNormal}
+                  onActivate={requestActivation}
+                  onBlock={blockInsufficientCapacity}
+                  onOverload={postActivationOverload}
+                  onSelective={selectiveResponse}
+                  onIdle={idleShutdown}
+                />
+              </aside>
+            </section>
+
+            <EventLogPanel events={events} />
+          </>
+        )}
+
+        {activeView === 'policies' && <PoliciesView />}
+
+        {activeView === 'hardware' && <HardwareView />}
       </main>
     </>
   )

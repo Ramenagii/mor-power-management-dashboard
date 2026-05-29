@@ -1,6 +1,6 @@
 import { Power } from 'lucide-react'
 import type { Outlet } from '../types/dashboard'
-import { formatWatts, statusClass } from '../utils/dashboard'
+import { formatWatts, isEnergizedOutlet, statusClass } from '../utils/dashboard'
 
 type OutletCardProps = {
   outlet: Outlet
@@ -9,6 +9,7 @@ type OutletCardProps = {
 
 export function OutletCard({ outlet, onToggle }: OutletCardProps) {
   const percent = Math.min((outlet.watts / outlet.allowance) * 100, 100)
+  const isEnergized = isEnergizedOutlet(outlet.status)
 
   return (
     <article className={`outlet-card ${statusClass(outlet.status)}`}>
@@ -50,7 +51,7 @@ export function OutletCard({ outlet, onToggle }: OutletCardProps) {
       </dl>
       <button type="button" className="icon-button" onClick={() => onToggle(outlet.id)}>
         <Power size={16} />
-        {outlet.status === 'Active' ? 'Disconnect' : 'Request activation'}
+        {isEnergized ? 'Disconnect' : 'Request activation'}
       </button>
     </article>
   )

@@ -4,6 +4,8 @@ export type OutletStatus = 'Active' | 'Standby' | 'Restricted' | 'Disconnected'
 
 export type Severity = 'info' | 'success' | 'warning' | 'critical'
 
+export type AppView = 'dashboard' | 'policies' | 'hardware'
+
 export type Outlet = {
   id: number
   name: string
