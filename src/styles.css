@@ -428,27 +428,147 @@ button {
 }
 
 .view-menu {
+  position: relative;
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   margin-top: 16px;
-  padding-bottom: 8px;
+  padding-bottom: 10px;
+  z-index: 20;
 }
 
-.view-menu button {
+.menu-current {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 36px;
+  align-items: baseline;
+  gap: 9px;
+  min-width: 0;
+}
+
+.menu-current span {
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.menu-current strong {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.hamburger-button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
   border: 1px solid var(--border);
   border-radius: 999px;
+  background: var(--surface);
+  cursor: pointer;
+  padding: 0;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    transform 120ms ease;
+}
+
+.hamburger-button:hover,
+.view-menu.open .hamburger-button {
+  border-color: rgba(6, 119, 173, 0.22);
+  background: var(--accent-soft);
+}
+
+.hamburger-button:active {
+  transform: scale(0.96);
+}
+
+.hamburger-button span {
+  position: absolute;
+  width: 18px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--ink);
+  transform-origin: center;
+  transition:
+    opacity 180ms ease,
+    transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 180ms ease;
+}
+
+.hamburger-button span:nth-child(1) {
+  transform: translateY(-6px);
+}
+
+.hamburger-button span:nth-child(2) {
+  transform: translateY(0);
+}
+
+.hamburger-button span:nth-child(3) {
+  transform: translateY(6px);
+}
+
+.view-menu.open .hamburger-button span {
+  background: var(--accent);
+}
+
+.view-menu.open .hamburger-button span:nth-child(1) {
+  transform: rotate(45deg);
+}
+
+.view-menu.open .hamburger-button span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.view-menu.open .hamburger-button span:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+.menu-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  display: grid;
+  gap: 8px;
+  width: min(320px, calc(100vw - 56px));
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18px 44px rgba(37, 35, 33, 0.12);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px) scale(0.98);
+  transform-origin: top right;
+  transition:
+    opacity 180ms ease,
+    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.view-menu.open .menu-panel {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.menu-panel button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  min-height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
   background: var(--surface);
   color: var(--muted);
   cursor: pointer;
   font-size: 12px;
   font-weight: 800;
-  padding: 0 14px;
+  padding: 0 12px;
   transition:
     background 160ms ease,
     border-color 160ms ease,
@@ -456,18 +576,18 @@ button {
     transform 120ms ease;
 }
 
-.view-menu button:hover {
+.menu-panel button:hover {
   border-color: var(--border-strong);
   color: var(--ink);
 }
 
-.view-menu button.active {
+.menu-panel button.active {
   border-color: rgba(6, 119, 173, 0.22);
   background: var(--accent-soft);
   color: var(--accent);
 }
 
-.view-menu button:active {
+.menu-panel button:active {
   transform: scale(0.985);
 }
 
@@ -1207,15 +1327,6 @@ h3 {
     grid-template-columns: 1fr;
   }
 
-  .view-menu {
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-
-  .view-menu button {
-    justify-content: flex-start;
-  }
-
   .page-heading {
     align-items: flex-start;
     flex-direction: column;
@@ -1371,6 +1482,22 @@ h3 {
 
   .event-title-row time {
     white-space: normal;
+  }
+
+  .view-menu {
+    align-items: flex-start;
+  }
+
+  .menu-current {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .menu-panel {
+    left: 0;
+    right: 0;
+    width: auto;
   }
 
   .loadwise-stage {
