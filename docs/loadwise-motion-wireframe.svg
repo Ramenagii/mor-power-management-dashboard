@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="980" viewBox="0 0 1440 980" fill="none">
+  <rect width="1440" height="980" rx="18" fill="#f7f6f3"/>
+  <text x="56" y="72" fill="#252321" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700">Loadwise Dashboard Motion Wireframe</text>
+  <text x="56" y="108" fill="#78746d" font-family="Inter, Arial, sans-serif" font-size="15">Logo handoff after loading, hamburger menu routing, and shared element view transitions for the defense dashboard.</text>
+
+  <defs>
+    <linearGradient id="logoBody" x1="0" x2="1" y1="0" y2="1">
+      <stop stop-color="#04b5df"/>
+      <stop offset=".52" stop-color="#056da4"/>
+      <stop offset="1" stop-color="#0d1b3a"/>
+    </linearGradient>
+    <g id="logo">
+      <ellipse cx="65" cy="153" rx="41" ry="7" fill="#141b23" opacity=".12"/>
+      <path d="M20 71h76.5L113 87.5v35c0 5.5-3 10.5-7.5 13.5l-29 21c-6.5 4.5-15.5 4.5-22 0l-29-21c-4.5-3-7.5-8-7.5-13.5V73c0-4 3-7 7-7Z" fill="url(#logoBody)"/>
+      <path d="M96 71h.5L113 87.5 93 107.5V80c0-5 3-9 3-9Z" fill="#042a56" opacity=".28"/>
+      <rect x="29" y="78" width="74" height="6" rx="3" fill="#e2faff" opacity=".72"/>
+      <rect x="36" y="36" width="6" height="35" rx="3" fill="#0677ad"/>
+      <rect x="62" y="18" width="6" height="53" rx="3" fill="#0677ad"/>
+      <rect x="88" y="36" width="6" height="35" rx="3" fill="#0d1b3a"/>
+      <circle cx="39" cy="31" r="15.5" fill="#058bc2"/>
+      <circle cx="65" cy="14" r="15.5" fill="#058bc2"/>
+      <circle cx="91" cy="31" r="15.5" fill="#0d1b3a"/>
+      <circle cx="39" cy="31" r="6" fill="#f9fbfb"/>
+      <circle cx="65" cy="14" r="6" fill="#f9fbfb"/>
+      <circle cx="91" cy="31" r="6" fill="#f9fbfb"/>
+      <rect x="38.5" y="88" width="53" height="43" rx="7" fill="#f7f7f5"/>
+      <rect x="50.5" y="102" width="7" height="15.5" rx="2" fill="#111827"/>
+      <rect x="72.5" y="102" width="7" height="15.5" rx="2" fill="#111827"/>
+      <path d="M60.5 125c0-3.5 2.5-6 5.5-6s5.5 2.5 5.5 6v8h-11v-8Z" fill="#111827"/>
+    </g>
+  </defs>
+
+  <g transform="translate(56 150)">
+    <rect width="350" height="280" rx="10" fill="white" stroke="#e8e5df"/>
+    <text x="24" y="38" fill="#0677ad" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700">1. Loading screen</text>
+    <use href="#logo" x="110" y="56" width="130" height="165"/>
+    <text x="96" y="224" fill="#25262d" font-family="Inter, Arial, sans-serif" font-size="28" letter-spacing="8">LOADWISE</text>
+    <rect x="111" y="246" width="128" height="3" rx="2" fill="#e8e5df"/>
+    <rect x="111" y="246" width="76" height="3" rx="2" fill="#0677ad"/>
+  </g>
+
+  <g transform="translate(545 150)">
+    <rect width="350" height="280" rx="10" fill="white" stroke="#e8e5df"/>
+    <text x="24" y="38" fill="#0677ad" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700">2. Shared logo handoff</text>
+    <use href="#logo" x="46" y="78" width="82" height="104"/>
+    <path d="M144 130H272" stroke="#0677ad" stroke-width="2"/>
+    <path d="M272 130l-10-6v12l10-6Z" fill="#0677ad"/>
+    <use href="#logo" x="278" y="86" width="44" height="56"/>
+    <text x="52" y="202" fill="#252321" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700">layoutId: loadwise-logo-mark</text>
+    <text x="52" y="230" fill="#78746d" font-family="Inter, Arial, sans-serif" font-size="12">The intro logo shrinks and lands in the top-left dashboard identity area.</text>
+  </g>
+
+  <g transform="translate(1034 150)">
+    <rect width="350" height="280" rx="10" fill="white" stroke="#e8e5df"/>
+    <text x="24" y="38" fill="#0677ad" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700">3. Dashboard shell</text>
+    <use href="#logo" x="24" y="58" width="48" height="61"/>
+    <text x="84" y="74" fill="#0677ad" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">SHARED LABORATORY POWER MANAGEMENT</text>
+    <text x="84" y="102" fill="#252321" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700">Power Management Console</text>
+    <rect x="24" y="136" width="302" height="36" rx="8" fill="#fbfbfa" stroke="#e8e5df"/>
+    <text x="38" y="159" fill="#252321" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700">Menu  Dashboard</text>
+    <circle cx="308" cy="154" r="15" fill="white" stroke="#e8e5df"/>
+    <path d="M301 149h14M301 154h14M301 159h14" stroke="#252321" stroke-width="2" stroke-linecap="round"/>
+    <rect x="24" y="194" width="302" height="62" rx="8" fill="#f7f6f3" stroke="#e8e5df"/>
+    <text x="42" y="222" fill="#252321" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700">Shared animated route surface</text>
+    <text x="42" y="244" fill="#78746d" font-family="Inter, Arial, sans-serif" font-size="11">Dashboard, Policies, and Hardware swap here.</text>
+  </g>
+
+  <path d="M426 290H525" stroke="#0677ad" stroke-width="2"/>
+  <path d="M525 290l-10-6v12l10-6Z" fill="#0677ad"/>
+  <path d="M915 290H1014" stroke="#0677ad" stroke-width="2"/>
+  <path d="M1014 290l-10-6v12l10-6Z" fill="#0677ad"/>
+
+  <g transform="translate(56 500)">
+    <rect width="860" height="360" rx="10" fill="white" stroke="#e8e5df"/>
+    <text x="28" y="48" fill="#252321" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">Shared element route animation</text>
+    <text x="28" y="76" fill="#78746d" font-family="Inter, Arial, sans-serif" font-size="13">The active menu state and one route surface animate between Dashboard, Policies, and Hardware Components.</text>
+    <g font-family="Inter, Arial, sans-serif">
+      <rect x="28" y="112" width="248" height="190" rx="8" fill="#fbfbfa" stroke="#e8e5df"/>
+      <text x="46" y="144" fill="#252321" font-size="16" font-weight="700">Dashboard</text>
+      <rect x="46" y="166" width="210" height="28" rx="6" fill="#edf7fb"/>
+      <rect x="46" y="216" width="92" height="46" rx="6" fill="white" stroke="#e8e5df"/>
+      <rect x="156" y="216" width="92" height="46" rx="6" fill="white" stroke="#e8e5df"/>
+      <rect x="306" y="112" width="248" height="190" rx="8" fill="#fbfbfa" stroke="#e8e5df"/>
+      <text x="324" y="144" fill="#252321" font-size="16" font-weight="700">Policies</text>
+      <rect x="324" y="166" width="210" height="28" rx="6" fill="#edf7fb"/>
+      <rect x="324" y="216" width="92" height="46" rx="6" fill="white" stroke="#e8e5df"/>
+      <rect x="434" y="216" width="92" height="46" rx="6" fill="white" stroke="#e8e5df"/>
+      <rect x="584" y="112" width="248" height="190" rx="8" fill="#fbfbfa" stroke="#e8e5df"/>
+      <text x="602" y="144" fill="#252321" font-size="16" font-weight="700">Hardware</text>
+      <rect x="602" y="166" width="210" height="28" rx="6" fill="#edf7fb"/>
+      <rect x="602" y="216" width="92" height="46" rx="6" fill="white" stroke="#e8e5df"/>
+      <rect x="712" y="216" width="92" height="46" rx="6" fill="white" stroke="#e8e5df"/>
+    </g>
+    <rect x="292" y="316" width="276" height="30" rx="15" fill="#edf7fb" stroke="#c7e4f2"/>
+    <text x="334" y="336" fill="#0677ad" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700">layoutId: loadwise-route-surface</text>
+  </g>
+
+  <g transform="translate(972 500)">
+    <rect width="412" height="360" rx="10" fill="white" stroke="#e8e5df"/>
+    <text x="28" y="48" fill="#252321" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">Motion notes</text>
+    <g fill="#78746d" font-family="Inter, Arial, sans-serif" font-size="13">
+      <text x="76" y="104">Logo handoff: shared layout from intro to header.</text>
+      <text x="76" y="164">Hamburger menu: compact overlay with staggered items.</text>
+      <text x="76" y="224">Route surface: Dashboard, Policies, Hardware swap inside one animated area.</text>
+      <text x="76" y="284">Reduced motion: large transforms are softened when preferred.</text>
+    </g>
+    <g fill="#edf7fb" stroke="#c7e4f2">
+      <rect x="28" y="82" width="32" height="32" rx="7"/>
+      <rect x="28" y="142" width="32" height="32" rx="7"/>
+      <rect x="28" y="202" width="32" height="32" rx="7"/>
+      <rect x="28" y="262" width="32" height="32" rx="7"/>
+    </g>
+  </g>
+</svg>

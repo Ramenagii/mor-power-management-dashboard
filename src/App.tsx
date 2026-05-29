@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
+import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from 'framer-motion'
 import { Activity, Gauge, PlugZap, ScanLine, ShieldCheck } from 'lucide-react'
 import { EventLogPanel } from './components/EventLogPanel'
 import { HardwareView } from './components/HardwareView'
+import { LoadwiseBrand } from './components/LoadwiseBrand'
 import { LoadingScreen } from './components/LoadingScreen'
 import { MetricCard } from './components/MetricCard'
 import { OutletCard } from './components/OutletCard'
@@ -31,6 +33,7 @@ function App() {
   const [introDone, setIntroDone] = useState(false)
   const [introKey, setIntroKey] = useState(0)
   const [activeView, setActiveView] = useState<AppView>('dashboard')
+  const prefersReducedMotion = useReducedMotion()
 
   useEffect(() => {
     const timer = window.setTimeout(() => setIntroDone(true), 3600)
@@ -211,14 +214,44 @@ function App() {
     addEvent('Manual relay action', `${outlet.name} was activated after capacity assessment.`, 'success')
   }
 
+  const routeInitial = prefersReducedMotion
+    ? { opacity: 0 }
+    : { opacity: 0, y: 18, filter: 'blur(8px)' }
+  const routeAnimate = { opacity: 1, y: 0, filter: 'blur(0px)' }
+  const routeExit = prefersReducedMotion
+    ? { opacity: 0 }
+    : { opacity: 0, y: -10, filter: 'blur(6px)' }
+
   return (
-    <>
-      <LoadingScreen key={introKey} isLeaving={introDone} />
-      <main className={`app-shell ${introDone ? 'is-ready' : 'is-waiting'}`}>
+    <LayoutGroup id={`loadwise-${introKey}`}>
+      <AnimatePresence mode="popLayout">
+        {!introDone && <LoadingScreen key={`intro-${introKey}`} />}
+      </AnimatePresence>
+      <motion.main
+        className={`app-shell ${introDone ? 'is-ready' : 'is-waiting'}`}
+        initial={false}
+        animate={introDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+        transition={{ duration: 0.56, ease: [0.22, 1, 0.36, 1] }}
+      >
         <header className="topbar">
-          <div>
-            <p className="eyebrow">Shared Laboratory Power Management</p>
-            <h1>Power Management Console</h1>
+          <div className="topbar-identity">
+            <AnimatePresence>
+              {introDone && (
+                <motion.div
+                  className="topbar-logo-slot"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <LoadwiseBrand variant="header" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+            <div>
+              <p className="eyebrow">Shared Laboratory Power Management</p>
+              <h1>Power Management Console</h1>
+            </div>
           </div>
           <div className="topbar-actions">
             <button type="button" className="replay-button" onClick={replayIntro}>
@@ -233,93 +266,108 @@ function App() {
 
         <ViewMenu activeView={activeView} onChange={setActiveView} />
 
-        {activeView === 'dashboard' && (
-          <>
-            <section className="overview-grid" aria-label="System overview">
-              <MetricCard
-                icon={<Gauge />}
-                label="Total load"
-                value={formatWatts(load)}
-                note={`${Math.round(loadPercent)}% of 2,200 W capacity`}
-              />
-              <MetricCard
-                icon={<ShieldCheck />}
-                label="Remaining capacity"
-                value={formatWatts(remaining)}
-                note={`${formatWatts(WARNING_THRESHOLD)} warning / ${formatWatts(CRITICAL_THRESHOLD)} critical`}
-              />
-              <MetricCard
-                icon={<PlugZap />}
-                label="Energized outlets"
-                value={`${activeCount}/6`}
-                note="Active and standby relay channels"
-              />
-              <MetricCard
-                icon={<ScanLine />}
-                label="Metering channels"
-                value="6"
-                note="One PZEM-004T v3.0 + CT per outlet"
-              />
-            </section>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={activeView}
+            className={`route-view ${activeView}-route`}
+            layoutId="loadwise-route-surface"
+            initial={routeInitial}
+            animate={routeAnimate}
+            exit={routeExit}
+            transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {activeView === 'dashboard' && (
+              <>
+                <section className="overview-grid" aria-label="System overview">
+                  <MetricCard
+                    icon={<Gauge />}
+                    label="Total load"
+                    value={formatWatts(load)}
+                    note={`${Math.round(loadPercent)}% of 2,200 W capacity`}
+                  />
+                  <MetricCard
+                    icon={<ShieldCheck />}
+                    label="Remaining capacity"
+                    value={formatWatts(remaining)}
+                    note={`${formatWatts(WARNING_THRESHOLD)} warning / ${formatWatts(CRITICAL_THRESHOLD)} critical`}
+                  />
+                  <MetricCard
+                    icon={<PlugZap />}
+                    label="Energized outlets"
+                    value={`${activeCount}/6`}
+                    note="Active and standby relay channels"
+                  />
+                  <MetricCard
+                    icon={<ScanLine />}
+                    label="Metering channels"
+                    value="6"
+                    note="One PZEM-004T v3.0 + CT per outlet"
+                  />
+                </section>
 
-            <section className="load-panel" aria-label="Load capacity meter">
-              <div className="section-heading">
-                <div>
-                  <p className="eyebrow">Real-time load condition</p>
-                  <h2>Capacity and thresholds</h2>
-                </div>
-                <span>
-                  {formatWatts(load)} / {formatWatts(MAX_CAPACITY)}
-                </span>
-              </div>
-              <div className="meter" aria-label="Total load usage">
-                <div className="warning-mark" />
-                <div className="critical-mark" />
-                <div className={`meter-fill ${currentState.toLowerCase()}`} style={{ width: `${loadPercent}%` }} />
-              </div>
-              <div className="threshold-row">
-                <span>Normal</span>
-                <span>Warning: {formatWatts(WARNING_THRESHOLD)}</span>
-                <span>Critical: {formatWatts(CRITICAL_THRESHOLD)}</span>
-              </div>
-            </section>
-
-            <section className="workspace-grid dashboard-workspace">
-              <div className="outlet-section">
-                <div className="section-heading">
-                  <div>
-                    <p className="eyebrow">Outlet-level monitoring</p>
-                    <h2>Six controlled outlets</h2>
+                <section className="load-panel" aria-label="Load capacity meter">
+                  <div className="section-heading">
+                    <div>
+                      <p className="eyebrow">Real-time load condition</p>
+                      <h2>Capacity and thresholds</h2>
+                    </div>
+                    <span>
+                      {formatWatts(load)} / {formatWatts(MAX_CAPACITY)}
+                    </span>
                   </div>
-                </div>
-                <div className="outlet-grid">
-                  {outlets.map((outlet) => (
-                    <OutletCard key={outlet.id} outlet={outlet} onToggle={toggleOutlet} />
-                  ))}
-                </div>
-              </div>
+                  <div className="meter" aria-label="Total load usage">
+                    <div className="warning-mark" />
+                    <div className="critical-mark" />
+                    <div
+                      className={`meter-fill ${currentState.toLowerCase()}`}
+                      style={{ width: `${loadPercent}%` }}
+                    />
+                  </div>
+                  <div className="threshold-row">
+                    <span>Normal</span>
+                    <span>Warning: {formatWatts(WARNING_THRESHOLD)}</span>
+                    <span>Critical: {formatWatts(CRITICAL_THRESHOLD)}</span>
+                  </div>
+                </section>
 
-              <aside className="side-stack">
-                <ScenarioPanel
-                  onNormal={resetNormal}
-                  onActivate={requestActivation}
-                  onBlock={blockInsufficientCapacity}
-                  onOverload={postActivationOverload}
-                  onSelective={selectiveResponse}
-                  onIdle={idleShutdown}
-                />
-              </aside>
-            </section>
+                <section className="workspace-grid dashboard-workspace">
+                  <div className="outlet-section">
+                    <div className="section-heading">
+                      <div>
+                        <p className="eyebrow">Outlet-level monitoring</p>
+                        <h2>Six controlled outlets</h2>
+                      </div>
+                    </div>
+                    <div className="outlet-grid">
+                      {outlets.map((outlet) => (
+                        <OutletCard key={outlet.id} outlet={outlet} onToggle={toggleOutlet} />
+                      ))}
+                    </div>
+                  </div>
 
-            <EventLogPanel events={events} />
-          </>
-        )}
+                  <aside className="side-stack">
+                    <ScenarioPanel
+                      onNormal={resetNormal}
+                      onActivate={requestActivation}
+                      onBlock={blockInsufficientCapacity}
+                      onOverload={postActivationOverload}
+                      onSelective={selectiveResponse}
+                      onIdle={idleShutdown}
+                    />
+                  </aside>
+                </section>
 
-        {activeView === 'policies' && <PoliciesView />}
+                <EventLogPanel events={events} />
+              </>
+            )}
 
-        {activeView === 'hardware' && <HardwareView />}
-      </main>
-    </>
+            {activeView === 'policies' && <PoliciesView />}
+
+            {activeView === 'hardware' && <HardwareView />}
+          </motion.div>
+        </AnimatePresence>
+      </motion.main>
+    </LayoutGroup>
   )
 }
 
