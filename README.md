@@ -1,5 +1,7 @@
 # Loadwise Power Management Dashboard
 
+[![CI](https://github.com/Ramenagii/mor-power-management-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/Ramenagii/mor-power-management-dashboard/actions/workflows/ci.yml)
+
 Minimalist thesis defense dashboard for a context-aware power management extension. The app simulates outlet-level load monitoring, activation checks, overload response, idle shutdown policy, and event logging for a smart power strip or lab-scale controller.
 
 ![Loadwise Power Management Dashboard screenshot](./docs/screenshot.png)
